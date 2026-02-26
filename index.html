@@ -3,233 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Star Vep</title>
+    <title>STARVELL | Marketplace</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         :root {
-            --bg-color: #0a0a0b;
-            --header-bg: rgba(24, 24, 26, 0.8);
-            --sub-header-bg: #141416;
-            --search-bg: #212124;
-            --accent-blue: #3b82f6;
+            --bg-color: #0d0d0f;
+            --panel-bg: #161618;
+            --card-bg: #1a1a1d;
+            --accent: #3b82f6;
             --text-main: #ffffff;
-            --text-secondary: #a1a1aa;
-            --panel-card: #18181b;
-            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            --text-dim: #94a3b8;
+            --header-h: 70px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { margin: 0; font-family: 'Inter', sans-serif; background: var(--bg-color); color: var(--text-main); overflow-x: hidden; line-height: 1.5; }
 
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            overflow-x: hidden;
-            background-image: radial-gradient(circle at top right, #1e1e2e 0%, transparent 400px);
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- АНИМАЦИИ --- */
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes blurIn {
-            from { backdrop-filter: blur(0); }
-            to { backdrop-filter: blur(12px); }
-        }
-
-        /* --- ШАПКА --- */
+        /* --- HEADER --- */
         header {
-            background-color: var(--header-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            height: 70px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 5%;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
+            height: var(--header-h); background: rgba(13, 13, 15, 0.85); backdrop-filter: blur(20px);
+            display: flex; align-items: center; justify-content: space-between; padding: 0 4%;
+            border-bottom: 1px solid rgba(255,255,255,0.05); position: sticky; top: 0; z-index: 1000;
         }
 
-        .header-left { display: flex; align-items: center; gap: 30px; flex: 1; }
+        .header-left { display: flex; align-items: center; gap: 30px; }
+        .logo { display: flex; align-items: center; gap: 10px; cursor: pointer; text-decoration: none; color: #fff; }
+        .logo-icon { width: 26px; height: 26px; background: var(--accent); clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); }
+        .logo-text { font-size: 20px; font-weight: 800; letter-spacing: 0.5px; }
 
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-            color: white;
-            cursor: pointer;
-            transition: var(--transition);
+        .header-right { display: flex; align-items: center; gap: 15px; }
+        .user-nav-links { display: flex; align-items: center; gap: 18px; margin-right: 10px; }
+        .nav-item { display: flex; align-items: center; gap: 8px; color: var(--text-dim); text-decoration: none; font-size: 14px; font-weight: 500; transition: var(--transition); }
+        .nav-item:hover { color: #fff; }
+        .nav-item i { width: 18px; }
+
+        .profile-trigger { display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 4px 4px 4px 12px; border-radius: 50px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); transition: var(--transition); position: relative; }
+        .profile-trigger:hover { background: rgba(255,255,255,0.08); border-color: var(--accent); }
+        .profile-trigger img { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 1.5px solid var(--accent); }
+
+        /* --- DROPDOWN (Иконки близко к тексту) --- */
+        #userDropdown {
+            position: absolute; top: 55px; right: 0; width: 240px; background: #161618; border: 1px solid #252525;
+            border-radius: 16px; display: none; flex-direction: column; padding: 8px; box-shadow: 0 20px 40px rgba(0,0,0,0.6); animation: fadeIn 0.2s ease;
         }
-        .logo-container:hover { transform: scale(1.02); opacity: 0.9; }
-
-        .logo-icon {
-            width: 28px;
-            height: 28px;
-            background: linear-gradient(135deg, #3b82f6, #60a5fa);
-            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-            box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
-        }
-
-        .logo-text { font-size: 22px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
-
-        .search-box { position: relative; width: 100%; max-width: 450px; transition: var(--transition); }
-        .search-box input {
-            width: 100%;
-            background-color: var(--search-bg);
-            border: 1px solid transparent;
-            border-radius: 12px;
-            padding: 12px 16px 12px 45px;
-            color: #fff;
-            outline: none;
-            font-size: 14px;
-            transition: var(--transition);
-        }
-        .search-box input:focus { border-color: var(--accent-blue); background: #1a1a1d; box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1); }
-        .search-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #71717a; width: 18px; }
-
-        .header-right { display: flex; align-items: center; gap: 25px; }
-        .nav-link { color: var(--text-secondary); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.3s; }
-        .nav-link:hover { color: #fff; }
-
-        .user-nav { display: none; align-items: center; gap: 10px; cursor: pointer; padding: 6px 12px; background: rgba(255,255,255,0.03); border-radius: 12px; }
-        .user-nav img { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent-blue); }
-
-        .btn-login {
-            background: #ffffff;
-            color: #000;
-            border: none;
-            padding: 10px 24px;
-            border-radius: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        .btn-login:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255,255,255,0.1); }
-
-        /* --- КАТЕГОРИИ --- */
-        .category-bar {
-            background-color: var(--sub-header-bg);
-            display: flex;
-            justify-content: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            overflow-x: auto;
-            -ms-overflow-style: none; scrollbar-width: none;
-        }
-        .category-bar::-webkit-scrollbar { display: none; }
-
-        .cat-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            color: var(--text-secondary);
-            text-decoration: none;
-            padding: 15px 25px;
-            font-size: 13px;
-            font-weight: 500;
-            transition: var(--transition);
-            border-bottom: 2px solid transparent;
-            white-space: nowrap;
-        }
-        .cat-item i { width: 20px; transition: transform 0.3s; }
-        .cat-item:hover { color: #fff; }
-        .cat-item:hover i { transform: translateY(-3px); }
-        .cat-item.active { color: var(--accent-blue); border-bottom-color: var(--accent-blue); }
-
-        /* --- КОНТЕНТ --- */
-        .main-content { max-width: 1300px; margin: 40px auto; padding: 0 20px; animation: fadeInUp 0.8s ease; }
+        .drop-header { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 12px; cursor: pointer; margin-bottom: 5px; border-bottom: 1px solid #222; }
+        .drop-header:hover { background: #222; }
+        .drop-header img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
         
-        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
-        .btn-sell { 
-            background: linear-gradient(135deg, var(--accent-blue), #2563eb); 
-            color: white; border: none; padding: 14px 28px; border-radius: 14px; 
-            font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 10px;
-            transition: var(--transition);
+        .drop-link { display: flex; align-items: center; gap: 12px; padding: 10px 12px; color: #eee; text-decoration: none; font-size: 14px; border-radius: 10px; transition: 0.2s; cursor: pointer; }
+        .drop-link:hover { background: #222; color: #fff; }
+        .drop-link i { width: 18px; color: var(--text-dim); }
+        .drop-link:hover i { color: #fff; }
+
+        .drop-link.logout { color: #ff5555; border-top: 1px solid #252525; margin-top: 5px; padding-top: 15px; }
+        .drop-link.logout i { color: #ff5555; }
+
+        /* --- CATEGORY TAGS --- */
+        .category-section { max-width: 1200px; margin: 25px auto 0; padding: 0 20px; }
+        .tags-container { display: flex; flex-wrap: wrap; gap: 10px; }
+        .tag {
+            background: #1a1a1d; color: var(--accent); padding: 10px 22px; border-radius: 10px;
+            text-decoration: none; font-size: 14px; font-weight: 600; transition: var(--transition);
+            border: 1px solid transparent; cursor: pointer;
         }
-        .btn-sell:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3); }
+        .tag:hover { background: #252529; transform: translateY(-2px); }
+        .tag.active { background: rgba(59, 130, 246, 0.1); border-color: rgba(59, 130, 246, 0.3); color: #60a5fa; }
 
-        .product-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
-            gap: 25px; 
-        }
+        /* --- MAIN CONTENT --- */
+        .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; animation: fadeIn 0.6s ease; }
+        .page-title-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        .btn-sell { background: var(--accent); color: #fff; border: none; padding: 12px 24px; border-radius: 12px; font-weight: 700; cursor: pointer; transition: 0.3s; }
+        .btn-sell:hover { filter: brightness(1.2); transform: translateY(-2px); }
 
-        .product-card { 
-            background: var(--panel-card); 
-            border-radius: 20px; 
-            padding: 25px; 
-            border: 1px solid rgba(255,255,255,0.03); 
-            transition: var(--transition);
-            cursor: pointer;
-        }
-        .product-card:hover { 
-            transform: translateY(-8px); 
-            background: #1c1c1f;
-            border-color: rgba(59, 130, 246, 0.4);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
-        }
-        .price { font-size: 24px; font-weight: 800; margin: 20px 0; color: #fff; }
-        .btn-buy { width: 100%; padding: 12px; background: #27272a; border: none; color: white; border-radius: 12px; cursor: pointer; font-weight: 700; transition: 0.3s; }
-        .product-card:hover .btn-buy { background: var(--accent-blue); }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+        .card { background: var(--card-bg); border-radius: 20px; padding: 25px; border: 1px solid #222; transition: var(--transition); }
+        .card:hover { transform: translateY(-5px); border-color: var(--accent); }
+        .price { font-size: 22px; font-weight: 800; margin: 15px 0; }
+        .btn-buy { width: 100%; padding: 12px; background: #2a2a2e; border: none; color: #fff; border-radius: 10px; font-weight: 700; cursor: pointer; }
 
-        /* --- МОДАЛКИ (GLASS) --- */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.7); display: none;
-            justify-content: center; align-items: center; z-index: 2000;
-            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-            animation: blurIn 0.3s ease;
-        }
-        .modal-panel { 
-            background: rgba(24, 24, 27, 0.95);
-            width: 90%; max-width: 400px; padding: 40px; border-radius: 30px; 
-            text-align: center; position: relative; border: 1px solid rgba(255,255,255,0.1);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
-        }
-        .close-modal { position: absolute; top: 20px; right: 20px; color: var(--text-secondary); cursor: pointer; transition: 0.3s; }
-        .close-modal:hover { color: #fff; transform: rotate(90deg); }
+        /* --- PROFILE PAGE --- */
+        .profile-card { background: #121214; border-radius: 20px; overflow: hidden; border: 1px solid #222; animation: fadeIn 0.5s ease; }
+        .profile-banner { height: 180px; background: linear-gradient(45deg, #0f172a, #1e293b); background-image: url('https://w.forfun.com/fetch/51/515286571550974f762f2d9061036495.jpeg'); background-size: cover; background-position: center; }
+        .profile-inner { padding: 0 40px 40px; display: grid; grid-template-columns: 1fr 340px; gap: 40px; }
+        
+        .profile-left { margin-top: -60px; }
+        .p-avatar { width: 120px; height: 120px; border-radius: 50%; border: 6px solid #121214; object-fit: cover; background: #222; margin-bottom: 20px; }
+        .p-nick { font-size: 26px; font-weight: 800; margin: 0; text-transform: uppercase; letter-spacing: 1px; }
+        .p-status { color: #10b981; font-size: 14px; font-weight: 600; margin-bottom: 25px; display: block; }
+        
+        .p-bio-box { margin-top: 30px; border-top: 1px solid #222; padding-top: 25px; }
+        .p-bio-title { color: var(--text-dim); font-size: 13px; display: flex; justify-content: space-between; margin-bottom: 12px; }
+        .p-bio-text { color: #ccc; font-style: italic; font-size: 15px; margin: 0; }
 
-        .modal-panel input { 
-            width: 100%; padding: 14px; background: #0a0a0b; border: 1px solid #27272a; 
-            border-radius: 14px; color: white; margin-bottom: 15px; box-sizing: border-box; outline: none; transition: 0.3s;
-        }
-        .modal-panel input:focus { border-color: var(--accent-blue); }
-        .btn-main { width: 100%; padding: 16px; background: var(--accent-blue); border: none; border-radius: 14px; color: white; font-weight: 700; cursor: pointer; margin-top: 10px; }
+        .profile-right { margin-top: 30px; }
+        .stat-panel { background: #1a1a1d; border-radius: 16px; padding: 25px; border: 1px solid #252525; }
+        .stat-item { margin-bottom: 20px; }
+        .stat-item span { color: var(--text-dim); font-size: 13px; display: block; margin-bottom: 5px; }
+        .stat-item b { font-size: 16px; color: #fff; }
 
-        .avatar-setup { width: 100px; height: 100px; background: #27272a; border-radius: 50%; margin: 0 auto 20px; cursor: pointer; overflow: hidden; border: 3px solid var(--accent-blue); }
-        .avatar-setup img { width: 100%; height: 100%; object-fit: cover; }
+        /* --- MODALS --- */
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 2000; backdrop-filter: blur(10px); }
+        .modal-content { background: #18181b; width: 90%; max-width: 380px; padding: 35px; border-radius: 24px; text-align: center; border: 1px solid #333; position: relative; }
+        .modal-content input { width: 100%; padding: 14px; background: #0a0a0b; border: 1px solid #333; border-radius: 12px; color: #fff; margin-bottom: 15px; outline: none; }
+        .btn-full { width: 100%; padding: 14px; background: var(--accent); border: none; border-radius: 12px; color: #fff; font-weight: 700; cursor: pointer; }
 
-        /* --- АДАПТИВ ДЛЯ ТЕЛЕФОНА --- */
-        @media (max-width: 768px) {
-            header { padding: 0 15px; height: 60px; }
-            .header-left { gap: 15px; }
-            .logo-text { font-size: 18px; }
-            .search-box { display: none; } /* На мобилках поиск обычно в отдельной кнопке, тут скроем для места */
-            .nav-link { display: none; }
-            .header-right { gap: 12px; }
-            
-            .category-bar { justify-content: flex-start; padding: 0 10px; }
-            .cat-item { padding: 12px 15px; font-size: 12px; }
-
-            .page-header { flex-direction: column; align-items: flex-start; gap: 20px; }
-            .btn-sell { width: 100%; justify-content: center; }
-
-            .product-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
-            .product-card { padding: 15px; border-radius: 15px; }
-            .price { font-size: 18px; }
-        }
-
-        @media (max-width: 480px) {
-            .product-grid { grid-template-columns: 1fr; } /* На очень маленьких по одному в ряд */
+        @media (max-width: 900px) {
+            .profile-inner { grid-template-columns: 1fr; padding: 0 20px 30px; }
+            .user-nav-links { display: none; }
+            .grid { grid-template-columns: 1fr 1fr; }
+            .header-left { gap: 10px; }
         }
     </style>
 </head>
@@ -237,187 +123,187 @@
 
     <header>
         <div class="header-left">
-            <div class="logo-container" onclick="goHome()">
+            <div class="logo" onclick="location.reload()">
                 <div class="logo-icon"></div>
-                <div class="logo-text">Star Vep</div>
-            </div>
-            <div class="search-box">
-                <i data-lucide="search" class="search-icon"></i>
-                <input type="text" placeholder="Поиск услуг и аккаунтов...">
+                <div class="logo-text">STARVELL</div>
             </div>
         </div>
+        
         <div class="header-right">
-            <a href="#" class="nav-link">Помощь</a>
-            <a href="#" class="nav-link">Русский</a>
-            
-            <div id="userProfile" class="user-nav" onclick="logout()">
-                <img id="navAvatar" src="" alt="">
-                <span id="navNickname">Профиль</span>
+            <!-- Панель для вошедшего -->
+            <div id="loggedUI" style="display:none; align-items:center;">
+                <div class="user-nav-links">
+                    <a href="#" class="nav-item"><i data-lucide="message-square"></i><span>Сообщения</span></a>
+                    <a href="#" class="nav-item"><i data-lucide="wallet"></i><span>Кошелек</span></a>
+                </div>
+                <div class="profile-trigger" onclick="toggleDrop(event)">
+                    <span id="navNick" style="font-weight:600; font-size:14px">Ник</span>
+                    <img id="navAva" src="" alt="">
+                    
+                    <div id="userDropdown">
+                        <div class="drop-header" onclick="openProfile()">
+                            <img id="dropAva" src="" alt="">
+                            <div>
+                                <div id="dropNick" style="font-weight:700">Имя</div>
+                                <span style="font-size:12px; color:var(--text-dim)">Открыть профиль</span>
+                            </div>
+                        </div>
+                        <div class="drop-link"><i data-lucide="shopping-bag"></i>Покупки</div>
+                        <div class="drop-link"><i data-lucide="list"></i>Продажи</div>
+                        <div class="drop-link"><i data-lucide="help-circle"></i>Помощь</div>
+                        <div class="drop-link"><i data-lucide="headphones"></i>Поддержка</div>
+                        <div class="drop-link"><i data-lucide="settings"></i>Настройки</div>
+                        <div class="drop-link logout" onclick="logout()"><i data-lucide="log-out"></i>Выйти из аккаунта</div>
+                    </div>
+                </div>
             </div>
-            <button id="loginBtn" class="btn-login" onclick="openModal('loginModal')">Войти</button>
+
+            <!-- Кнопки для гостя -->
+            <div id="guestUI" style="display:flex; align-items:center; gap:20px">
+                <a href="#" class="nav-item" style="color:var(--text-dim)">Помощь</a>
+                <a href="#" class="nav-item" style="color:var(--text-dim)">Русский</a>
+                <button class="btn-sell" style="padding:8px 20px" onclick="openMod('loginMod')">Войти</button>
+            </div>
         </div>
     </header>
 
-    <nav class="category-bar">
-        <a href="javascript:void(0)" class="cat-item active" onclick="openPage(this, 'Звезды')"><i data-lucide="star"></i> Звезды</a>
-        <a href="javascript:void(0)" class="cat-item" onclick="openPage(this, 'NFT')"><i data-lucide="gem"></i> NFT</a>
-        <a href="javascript:void(0)" class="cat-item" onclick="openPage(this, 'Premium')"><i data-lucide="shield-check"></i> Premium</a>
-        <a href="javascript:void(0)" class="cat-item" onclick="openPage(this, 'Аккаунты')"><i data-lucide="user-circle"></i> Аккаунты</a>
-        <a href="javascript:void(0)" class="cat-item" onclick="openPage(this, 'Аренда')"><i data-lucide="key"></i> Аренда</a>
-        <a href="javascript:void(0)" class="cat-item" onclick="openPage(this, 'Username')"><i data-lucide="at-sign"></i> Username</a>
-        <a href="javascript:void(0)" class="cat-item" onclick="openPage(this, 'Услуги')"><i data-lucide="wrench"></i> Услуги</a>
-        <a href="javascript:void(0)" class="cat-item" onclick="openPage(this, 'Каналы')"><i data-lucide="megaphone"></i> Каналы</a>
-    </nav>
+    <div id="catSection" class="category-section">
+        <div class="tags-container" id="tagsBox">
+            <div class="tag active" onclick="openPage(this, 'Звёзды')">Звёзды</div>
+            <div class="tag" onclick="openPage(this, 'Подарки')">Подарки</div>
+            <div class="tag" onclick="openPage(this, 'Premium')">Premium</div>
+            <div class="tag" onclick="openPage(this, 'Каналы')">Каналы</div>
+            <div class="tag" onclick="openPage(this, 'Услуги')">Услуги</div>
+            <div class="tag" onclick="openPage(this, 'Аренда')">Аренда</div>
+            <div class="tag" onclick="openPage(this, 'Юзернеймы')">Юзернеймы</div>
+            <div class="tag" onclick="openPage(this, 'Аккаунты')">Аккаунты</div>
+            <div class="tag" onclick="openPage(this, 'Боты')">Боты</div>
+            <div class="tag" onclick="openPage(this, 'Прочее')">Прочее</div>
+        </div>
+    </div>
 
-    <main class="main-content" id="page-content"></main>
+    <main class="container" id="viewBox"></main>
 
     <!-- МОДАЛКИ -->
-    <div id="loginModal" class="modal-overlay">
-        <div class="modal-panel">
-            <div class="close-modal" onclick="closeModals()"><i data-lucide="x"></i></div>
-            <h2>Вход</h2>
-            <input type="text" id="loginUser" placeholder="Логин">
-            <input type="password" id="loginPass" placeholder="Пароль">
-            <button class="btn-main" onclick="processLogin()">Войти</button>
-            <div style="margin-top:20px; font-size:14px; color:var(--text-secondary)">
-                Нет аккаунта? <span style="color:var(--accent-blue); cursor:pointer;" onclick="openModal('regModal')">Регистрация</span>
-            </div>
+    <div id="loginMod" class="modal">
+        <div class="modal-content">
+            <h2 style="margin-top:0">Вход</h2>
+            <input type="text" id="lU" placeholder="Логин">
+            <input type="password" id="lP" placeholder="Пароль">
+            <button class="btn-full" onclick="login()">Войти</button>
+            <p style="font-size:13px; color:#555; margin-top:15px">Нет аккаунта? <span style="color:var(--accent); cursor:pointer" onclick="openMod('regMod')">Регистрация</span></p>
         </div>
     </div>
 
-    <div id="regModal" class="modal-overlay">
-        <div class="modal-panel">
-            <div class="close-modal" onclick="closeModals()"><i data-lucide="x"></i></div>
-            <h2>Регистрация</h2>
-            <input type="text" id="regUser" placeholder="Придумайте логин">
-            <input type="password" id="regPass1" placeholder="Пароль">
-            <input type="password" id="regPass2" placeholder="Повторите пароль">
-            <button class="btn-main" onclick="processRegister()">Создать профиль</button>
-            <div style="margin-top:20px; font-size:14px; color:var(--text-secondary)">
-                Есть аккаунт? <span style="color:var(--accent-blue); cursor:pointer;" onclick="openModal('loginModal')">Войти</span>
-            </div>
+    <div id="regMod" class="modal">
+        <div class="modal-content">
+            <h2 style="margin-top:0">Регистрация</h2>
+            <input type="text" id="rU" placeholder="Логин">
+            <input type="password" id="rP" placeholder="Пароль">
+            <button class="btn-full" onclick="reg()">Создать аккаунт</button>
         </div>
     </div>
 
-    <div id="setupModal" class="modal-overlay">
-        <div class="modal-panel">
-            <h2>Настройка профиля</h2>
-            <div class="avatar-setup" onclick="document.getElementById('fileIn').click()">
-                <img id="setupPre" src="https://ui-avatars.com/api/?name=User&background=random" alt="">
-            </div>
-            <input type="file" id="fileIn" style="display:none" onchange="previewImg(this)">
-            <input type="text" id="setupNick" placeholder="Ваш Никнейм">
-            <button class="btn-main" onclick="saveProfile()">Начать работу</button>
+    <div id="setMod" class="modal">
+        <div class="modal-content">
+            <h2 style="margin-top:0">Настройка ника</h2>
+            <input type="text" id="sN" placeholder="Ваш Никнейм">
+            <button class="btn-full" onclick="saveSet()">Завершить</button>
         </div>
     </div>
 
     <script>
         lucide.createIcons();
 
-        function closeModals() {
-            document.querySelectorAll('.modal-overlay').forEach(m => m.style.display = 'none');
-        }
+        function toggleDrop(e) { e.stopPropagation(); const d = document.getElementById('userDropdown'); d.style.display = d.style.display === 'flex' ? 'none' : 'flex'; }
+        window.onclick = () => document.getElementById('userDropdown').style.display = 'none';
 
-        function goHome() {
-            openPage(document.querySelector('.cat-item'), 'Звезды');
-            window.scrollTo({top: 0, behavior: 'smooth'});
-        }
+        function openMod(id) { document.querySelectorAll('.modal').forEach(m => m.style.display = 'none'); document.getElementById(id).style.display = 'flex'; }
+        function closeMods() { document.querySelectorAll('.modal').forEach(m => m.style.display = 'none'); }
 
         function openPage(el, title) {
-            document.querySelectorAll('.cat-item').forEach(i => i.classList.remove('active'));
-            el.classList.add('active');
-            
-            const content = document.getElementById('page-content');
-            content.style.opacity = '0';
-            
-            setTimeout(() => {
-                let cards = '';
-                for(let i=1; i<=8; i++) {
-                    cards += `
-                    <div class="product-card">
-                        <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
-                            <i data-lucide="box" style="color:var(--accent-blue)"></i>
-                            <span style="font-size:11px; font-weight:700; color:#10b981; background:rgba(16,185,129,0.1); padding:4px 8px; border-radius:6px;">TOP SELL</span>
-                        </div>
-                        <div style="font-weight:700; font-size:15px; margin-bottom:5px;">${title} Пакет #${i}04</div>
-                        <div style="color:var(--text-secondary); font-size:12px;">Продавец: Star_Vendor</div>
-                        <div class="price">${(Math.random()*600+50).toFixed(0)} ₽</div>
-                        <button class="btn-buy">Купить сейчас</button>
-                    </div>`;
-                }
-                
-                content.innerHTML = `
-                    <div class="page-header">
-                        <h1 style="margin:0; font-size:28px; font-weight:800;">${title}</h1>
-                        <button class="btn-sell"><i data-lucide="plus-circle"></i> Продать ${title}</button>
-                    </div>
-                    <div class="product-grid">${cards}</div>
-                `;
-                lucide.createIcons();
-                content.style.opacity = '1';
-            }, 200);
-        }
-
-        // --- AUTH LOGIC ---
-        function openModal(id) { closeModals(); document.getElementById(id).style.display = 'flex'; }
-
-        function processRegister() {
-            const u = document.getElementById('regUser').value;
-            const p1 = document.getElementById('regPass1').value;
-            const p2 = document.getElementById('regPass2').value;
-            if(!u || p1 !== p2) return alert("Данные введены некорректно!");
-            localStorage.setItem('user_'+u, JSON.stringify({username:u, password:p1, isFirst:true}));
-            openModal('loginModal');
-        }
-
-        function processLogin() {
-            const u = document.getElementById('loginUser').value;
-            const p = document.getElementById('loginPass').value;
-            const data = JSON.parse(localStorage.getItem('user_'+u));
-            if(data && data.password === p) {
-                localStorage.setItem('currentUser', u);
-                data.isFirst ? openModal('setupModal') : finishLogin(data);
-            } else alert("Ошибка входа!");
-        }
-
-        function previewImg(input) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = (e) => document.getElementById('setupPre').src = e.target.result;
-                reader.readAsDataURL(input.files[0]);
+            document.querySelectorAll('.tag').forEach(t => t.classList.remove('active')); el.classList.add('active');
+            document.getElementById('catSection').style.display = 'block';
+            let html = `<div class="page-title-row"><h1>${title}</h1><button class="btn-sell">Продать ${title}</button></div><div class="grid">`;
+            for(let i=1; i<=8; i++) {
+                html += `<div class="card"><i data-lucide="package" style="color:var(--accent)"></i><div style="font-weight:700; margin:15px 0 5px">${title} Объявление #${i}</div><div class="price">${(Math.random()*600+100).toFixed(0)} ₽</div><button class="btn-buy">Купить</button></div>`;
             }
+            document.getElementById('viewBox').innerHTML = html + `</div>`;
+            lucide.createIcons();
         }
 
-        function saveProfile() {
-            const nick = document.getElementById('setupNick').value;
-            const ava = document.getElementById('setupPre').src;
+        function openProfile() {
             const u = localStorage.getItem('currentUser');
-            const data = JSON.parse(localStorage.getItem('user_'+u));
-            if(!nick) return alert("Введите ник!");
-            data.nickname = nick; data.avatar = ava; data.isFirst = false;
-            localStorage.setItem('user_'+u, JSON.stringify(data));
-            finishLogin(data);
+            const d = JSON.parse(localStorage.getItem('user_'+u));
+            document.getElementById('catSection').style.display = 'none';
+            document.getElementById('viewBox').innerHTML = `
+                <div class="profile-card">
+                    <div class="profile-banner"></div>
+                    <div class="profile-inner">
+                        <div class="profile-left">
+                            <img src="${d.avatar || 'https://ui-avatars.com/api/?name='+d.nickname}" class="p-avatar">
+                            <h2 class="p-nick">${d.nickname}</h2>
+                            <span class="p-status">Онлайн</span>
+                            <div class="p-bio-box">
+                                <div class="p-bio-title"><span>Обо мне</span><span style="color:var(--accent); cursor:pointer" onclick="editBio()">Редактировать</span></div>
+                                <p class="p-bio-text">${d.bio || 'Здесь пока пусто...'}</p>
+                            </div>
+                        </div>
+                        <div class="profile-right">
+                            <div class="stat-panel">
+                                <div class="stat-item"><span>Дата регистрации</span><b>${d.regDate}</b></div>
+                                <div class="stat-item"><span>Рейтинг продавца</span><b>? из 5</b></div>
+                                <div style="color:var(--accent); font-weight:700; font-size:14px; cursor:pointer">0 отзывов</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+            lucide.createIcons();
         }
 
-        function finishLogin(data) {
-            closeModals();
-            document.getElementById('loginBtn').style.display = 'none';
-            document.getElementById('userProfile').style.display = 'flex';
-            document.getElementById('navNickname').innerText = data.nickname;
-            document.getElementById('navAvatar').src = data.avatar;
+        function editBio() {
+            const u = localStorage.getItem('currentUser'); const d = JSON.parse(localStorage.getItem('user_'+u));
+            const n = prompt("О себе:", d.bio); if(n !== null) { d.bio = n; localStorage.setItem('user_'+u, JSON.stringify(d)); openProfile(); }
         }
 
-        function logout() { if(confirm("Выйти из STARVELL?")) { localStorage.removeItem('currentUser'); location.reload(); } }
+        function reg() {
+            const u = document.getElementById('rU').value; const p = document.getElementById('rP').value;
+            if(!u || !p) return alert("Заполните поля!");
+            const date = new Date().toLocaleDateString('ru-RU', {day:'numeric', month:'long'});
+            localStorage.setItem('user_'+u, JSON.stringify({username:u, password:p, isFirst:true, regDate:date, bio:''}));
+            openMod('loginMod');
+        }
+
+        function login() {
+            const u = document.getElementById('lU').value; const p = document.getElementById('lP').value;
+            const d = JSON.parse(localStorage.getItem('user_'+u));
+            if(d && d.password === p) { localStorage.setItem('currentUser', u); d.isFirst ? openMod('setMod') : location.reload(); }
+            else alert("Ошибка входа!");
+        }
+
+        function saveSet() {
+            const n = document.getElementById('sN').value; const u = localStorage.getItem('currentUser');
+            const d = JSON.parse(localStorage.getItem('user_'+u));
+            if(!n) return alert("Введите ник!"); d.nickname = n; d.isFirst = false;
+            localStorage.setItem('user_'+u, JSON.stringify(d)); location.reload();
+        }
+
+        function logout() { localStorage.removeItem('currentUser'); location.reload(); }
 
         window.onload = () => {
-            openPage(document.querySelector('.cat-item'), 'Звезды');
-            const cur = localStorage.getItem('currentUser');
-            if(cur) {
-                const data = JSON.parse(localStorage.getItem('user_'+cur));
-                data.isFirst ? openModal('setupModal') : finishLogin(data);
+            const u = localStorage.getItem('currentUser');
+            if(u) {
+                const d = JSON.parse(localStorage.getItem('user_'+u));
+                document.getElementById('guestUI').style.display = 'none';
+                document.getElementById('loggedUI').style.display = 'flex';
+                document.getElementById('navNick').innerText = d.nickname;
+                const ava = d.avatar || "https://ui-avatars.com/api/?name="+d.nickname;
+                document.getElementById('navAva').src = ava;
+                document.getElementById('dropAva').src = ava;
+                document.getElementById('dropNick').innerText = d.nickname;
             }
+            openPage(document.querySelector('.tag'), 'Звёзды');
         };
     </script>
 </body>
-
 </html>
