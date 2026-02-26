@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STARVELL | Premium Marketplace</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --bg-color: #0a0a0b;
+            --header-bg: rgba(24, 24, 26, 0.8);
+            --sub-header-bg: #141416;
+            --search-bg: #212124;
+            --accent-blue: #3b82f6;
+            --text-main: #ffffff;
+            --text-secondary: #a1a1aa;
+            --panel-card: #18181b;
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+            background-image: radial-gradient(circle at top right, #1e1e2e 0%, transparent 400px);
+        }
+
+        /* --- АНИМАЦИИ --- */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes blurIn {
+            from { backdrop-filter: blur(0); }
+            to { backdrop-filter: blur(12px); }
+        }
+
+        /* --- ШАПКА --- */
+        header {
+            background-color: var(--header-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5%;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-left { display: flex; align-items: center; gap: 30px; flex: 1; }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: white;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .logo-container:hover { transform: scale(1.02); opacity: 0.9; }
+
+        .logo-icon {
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, #3b82f6, #60a5fa);
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+        }
+
+        .logo-text { font-size: 22px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
+
+        .search-box { position: relative; width: 100%; max-width: 450px; transition: var(--transition); }
+        .search-box input {
+            width: 100%;
+            background-color: var(--search-bg);
+            border: 1px solid transparent;
+            border-radius: 12px;
+            padding: 12px 16px 12px 45px;
+            color: #fff;
+            outline: none;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+        .search-box input:focus { border-color: var(--accent-blue); background: #1a1a1d; box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1); }
+        .search-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #71717a; width: 18px; }
+
+        .header-right { display: flex; align-items: center; gap: 25px; }
+        .nav-link { color: var(--text-secondary); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.3s; }
+        .nav-link:hover { color: #fff; }
+
+        .user-nav { display: none; align-items: center; gap: 10px; cursor: pointer; padding: 6px 12px; background: rgba(255,255,255,0.03); border-radius: 12px; }
+        .user-nav img { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent-blue); }
+
+        .btn-login {
+            background: #ffffff;
+            color: #000;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .btn-login:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255,255,255,0.1); }
+
+        /* --- КАТЕГОРИИ --- */
+        .category-bar {
+            background-color: var(--sub-header-bg);
+            display: flex;
+            justify-content: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            overflow-x: auto;
+            -ms-overflow-style: none; scrollbar-width: none;
+        }
+        .category-bar::-webkit-scrollbar { display: none; }
+
+        .cat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 15px 25px;
+            font-size: 13px;
+            font-weight: 500;
+            transition: var(--transition);
+            border-bottom: 2px solid transparent;
+            white-space: nowrap;
+        }
+        .cat-item i { width: 20px; transition: transform 0.3s; }
+        .cat-item:hover { color: #fff; }
+        .cat-item:hover i { transform: translateY(-3px); }
+        .cat-item.active { color: var(--accent-blue); border-bottom-color: var(--accent-blue); }
+
+        /* --- КОНТЕНТ --- */
+        .main-content { max-width: 1300px; margin: 40px auto; padding: 0 20px; animation: fadeInUp 0.8s ease; }
+        
+        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+        .btn-sell { 
+            background: linear-gradient(135deg, var(--accent-blue), #2563eb); 
+            color: white; border: none; padding: 14px 28px; border-radius: 14px; 
+            font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 10px;
+            transition: var(--transition);
+        }
+        .btn-sell:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3); }
+
+        .product-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+            gap: 25px; 
+        }
+
+        .product-card { 
+            background: var(--panel-card); 
+            border-radius: 20px; 
+            padding: 25px; 
+            border: 1px solid rgba(255,255,255,0.03); 
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        .product-card:hover { 
+            transform: translateY(-8px); 
+            background: #1c1c1f;
+            border-color: rgba(59, 130, 246, 0.4);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+        }
+        .price { font-size: 24px; font-weight: 800; margin: 20px 0; color: #fff; }
+        .btn-buy { width: 100%; padding: 12px; background: #27272a; border: none; color: white; border-radius: 12px; cursor: pointer; font-weight: 700; transition: 0.3s; }
+        .product-card:hover .btn-buy { background: var(--accent-blue); }
+
+        /* --- МОДАЛКИ (GLASS) --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7); display: none;
+            justify-content: center; align-items: center; z-index: 2000;
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            animation: blurIn 0.3s ease;
+        }
+        .modal-panel { 
+            background: rgba(24, 24, 27, 0.95);
+            width: 90%; max-width: 400px; padding: 40px; border-radius: 30px; 
+            text-align: center; position: relative; border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+        }
+        .close-modal { position: absolute; top: 20px; right: 20px; color: var(--text-secondary); cursor: pointer; transition: 0.3s; }
+        .close-modal:hover { color: #fff; transform: rotate(90deg); }
+
+        .modal-panel input { 
+            width: 100%; padding: 14px; background: #0a0a0b; border: 1px solid #27272a; 
+            border-radius: 14px; color: white; margin-bottom: 15px; box-sizing: border-box; outline: none; transition: 0.3s;
+        }
+        .modal-panel input:focus { border-color: var(--accent-blue); }
+        .btn-main { width: 100%; padding: 16px; background: var(--accent-blue); border: none; border-radius: 14px; color: white; font-weight: 700; cursor: pointer; margin-top: 10px; }
+
+        .avatar-setup { width: 100px; height: 100px; background: #27272a; border-radius: 50%; margin: 0 auto 20px; cursor: pointer; overflow: hidden; border: 3px solid var(--accent-blue); }
+        .avatar-setup img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* --- АДАПТИВ ДЛЯ ТЕЛЕФОНА --- */
+        @media (max-width: 768px) {
+            header { padding: 0 15px; height: 60px; }
+            .header-left { gap: 15px; }
+            .logo-text { font-size: 18px; }
+            .search-box { display: none; } /* На мобилках поиск обычно в отдельной кнопке, тут скроем для места */
+            .nav-link { display: none; }
+            .header-right { gap: 12px; }
+            
+            .category-bar { justify-content: flex-start; padding: 0 10px; }
+            .cat-item { padding: 12px 15px; font-size: 12px; }
+
+            .page-header { flex-direction: column; align-items: flex-start; gap: 20px; }
+            .btn-sell { width: 100%; justify-content: center; }
+
+            .product-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+            .product-card { padding: 15px; border-radius: 15px; }
+            .price { font-size: 18px; }
+        }
+
+        @media (max-width: 480px) {
+            .product-grid { grid-template-columns: 1fr; } /* На очень маленьких по одному в ряд */
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-left">
+            <div class="logo-container" onclick="goHome()">
+                <div class="logo-icon"></div>
+                <div class="logo-text">STARVELL</div>
+            </div>
+            <div class="search-box">
+                <i data-lucide="search" class="search-icon"></i>
+                <input type="text" placeholder="Поиск игр, услуг и аккаунтов...">
+            </div>
+        </div>
+        <div class="header-right">
+            <a href="#" class="nav-link">Помощь</a>
+            <a href="#" class="nav-link">Русский</a>
+            
+            <div id="userProfile" class="user-nav" onclick="logout()">
+                <img id="navAvatar" src="" alt="">
+                <span id="navNickname">Профиль</span>
+            </div>
+            <button id="loginBtn" class="btn-login" onclick="openModal('loginModal')">Войти</button>
+        </div>
+    </header>
+
+    <nav class="category-bar">
+        <a href="javascript:void(0)" class="cat-item active" onclick="openPage(this, 'Звезды')"><i data-lucide="star"></i> Звезды</a>
+        <a href="javascript:void(0)" class="cat-item" onclick="openPage(this, 'NFT')"><i data-lucide="gem"></i> NFT</a>
+        <a href="javascript:void(0)" class="cat-item" onclick="openPage(this, 'Premium')"><i data-lucide="shield-check"></i> Premium</a>
+        <a href="javascript:void(0)" class="cat-item" onclick="openPage(this, 'Аккаунты')"><i data-lucide="user-circle"></i> Аккаунты</a>
+        <a href="javascript:void(0)" class="cat-item" onclick="openPage(this, 'Аренда')"><i data-lucide="key"></i> Аренда</a>
+        <a href="javascript:void(0)" class="cat-item" onclick="openPage(this, 'Username')"><i data-lucide="at-sign"></i> Username</a>
+        <a href="javascript:void(0)" class="cat-item" onclick="openPage(this, 'Услуги')"><i data-lucide="wrench"></i> Услуги</a>
+        <a href="javascript:void(0)" class="cat-item" onclick="openPage(this, 'Каналы')"><i data-lucide="megaphone"></i> Каналы</a>
+    </nav>
+
+    <main class="main-content" id="page-content"></main>
+
+    <!-- МОДАЛКИ -->
+    <div id="loginModal" class="modal-overlay">
+        <div class="modal-panel">
+            <div class="close-modal" onclick="closeModals()"><i data-lucide="x"></i></div>
+            <h2>Вход</h2>
+            <input type="text" id="loginUser" placeholder="Логин">
+            <input type="password" id="loginPass" placeholder="Пароль">
+            <button class="btn-main" onclick="processLogin()">Войти</button>
+            <div style="margin-top:20px; font-size:14px; color:var(--text-secondary)">
+                Нет аккаунта? <span style="color:var(--accent-blue); cursor:pointer;" onclick="openModal('regModal')">Регистрация</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="regModal" class="modal-overlay">
+        <div class="modal-panel">
+            <div class="close-modal" onclick="closeModals()"><i data-lucide="x"></i></div>
+            <h2>Регистрация</h2>
+            <input type="text" id="regUser" placeholder="Придумайте логин">
+            <input type="password" id="regPass1" placeholder="Пароль">
+            <input type="password" id="regPass2" placeholder="Повторите пароль">
+            <button class="btn-main" onclick="processRegister()">Создать профиль</button>
+            <div style="margin-top:20px; font-size:14px; color:var(--text-secondary)">
+                Есть аккаунт? <span style="color:var(--accent-blue); cursor:pointer;" onclick="openModal('loginModal')">Войти</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="setupModal" class="modal-overlay">
+        <div class="modal-panel">
+            <h2>Настройка профиля</h2>
+            <div class="avatar-setup" onclick="document.getElementById('fileIn').click()">
+                <img id="setupPre" src="https://ui-avatars.com/api/?name=User&background=random" alt="">
+            </div>
+            <input type="file" id="fileIn" style="display:none" onchange="previewImg(this)">
+            <input type="text" id="setupNick" placeholder="Ваш Никнейм">
+            <button class="btn-main" onclick="saveProfile()">Начать работу</button>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        function closeModals() {
+            document.querySelectorAll('.modal-overlay').forEach(m => m.style.display = 'none');
+        }
+
+        function goHome() {
+            openPage(document.querySelector('.cat-item'), 'Звезды');
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+
+        function openPage(el, title) {
+            document.querySelectorAll('.cat-item').forEach(i => i.classList.remove('active'));
+            el.classList.add('active');
+            
+            const content = document.getElementById('page-content');
+            content.style.opacity = '0';
+            
+            setTimeout(() => {
+                let cards = '';
+                for(let i=1; i<=8; i++) {
+                    cards += `
+                    <div class="product-card">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
+                            <i data-lucide="box" style="color:var(--accent-blue)"></i>
+                            <span style="font-size:11px; font-weight:700; color:#10b981; background:rgba(16,185,129,0.1); padding:4px 8px; border-radius:6px;">TOP SELL</span>
+                        </div>
+                        <div style="font-weight:700; font-size:15px; margin-bottom:5px;">${title} Пакет #${i}04</div>
+                        <div style="color:var(--text-secondary); font-size:12px;">Продавец: Star_Vendor</div>
+                        <div class="price">${(Math.random()*600+50).toFixed(0)} ₽</div>
+                        <button class="btn-buy">Купить сейчас</button>
+                    </div>`;
+                }
+                
+                content.innerHTML = `
+                    <div class="page-header">
+                        <h1 style="margin:0; font-size:28px; font-weight:800;">${title}</h1>
+                        <button class="btn-sell"><i data-lucide="plus-circle"></i> Продать ${title}</button>
+                    </div>
+                    <div class="product-grid">${cards}</div>
+                `;
+                lucide.createIcons();
+                content.style.opacity = '1';
+            }, 200);
+        }
+
+        // --- AUTH LOGIC ---
+        function openModal(id) { closeModals(); document.getElementById(id).style.display = 'flex'; }
+
+        function processRegister() {
+            const u = document.getElementById('regUser').value;
+            const p1 = document.getElementById('regPass1').value;
+            const p2 = document.getElementById('regPass2').value;
+            if(!u || p1 !== p2) return alert("Данные введены некорректно!");
+            localStorage.setItem('user_'+u, JSON.stringify({username:u, password:p1, isFirst:true}));
+            openModal('loginModal');
+        }
+
+        function processLogin() {
+            const u = document.getElementById('loginUser').value;
+            const p = document.getElementById('loginPass').value;
+            const data = JSON.parse(localStorage.getItem('user_'+u));
+            if(data && data.password === p) {
+                localStorage.setItem('currentUser', u);
+                data.isFirst ? openModal('setupModal') : finishLogin(data);
+            } else alert("Ошибка входа!");
+        }
+
+        function previewImg(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (e) => document.getElementById('setupPre').src = e.target.result;
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function saveProfile() {
+            const nick = document.getElementById('setupNick').value;
+            const ava = document.getElementById('setupPre').src;
+            const u = localStorage.getItem('currentUser');
+            const data = JSON.parse(localStorage.getItem('user_'+u));
+            if(!nick) return alert("Введите ник!");
+            data.nickname = nick; data.avatar = ava; data.isFirst = false;
+            localStorage.setItem('user_'+u, JSON.stringify(data));
+            finishLogin(data);
+        }
+
+        function finishLogin(data) {
+            closeModals();
+            document.getElementById('loginBtn').style.display = 'none';
+            document.getElementById('userProfile').style.display = 'flex';
+            document.getElementById('navNickname').innerText = data.nickname;
+            document.getElementById('navAvatar').src = data.avatar;
+        }
+
+        function logout() { if(confirm("Выйти из STARVELL?")) { localStorage.removeItem('currentUser'); location.reload(); } }
+
+        window.onload = () => {
+            openPage(document.querySelector('.cat-item'), 'Звезды');
+            const cur = localStorage.getItem('currentUser');
+            if(cur) {
+                const data = JSON.parse(localStorage.getItem('user_'+cur));
+                data.isFirst ? openModal('setupModal') : finishLogin(data);
+            }
+        };
+    </script>
+</body>
+</html>
